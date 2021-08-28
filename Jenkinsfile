@@ -33,7 +33,7 @@ pipeline{
         // Stage3: Publish to nexus
         stage ("Publish to Nexus"){
             steps {
-                nexusArtifactUploader artifacts: [[artifactId: '${ArtifactID}', classifier: '', file: "'target/${Name}-${Version}.war'", type: 'war']], credentialsId: 'e3c08fb5-e259-4985-82b1-136ad0802892', groupId: '${GroupId}', nexusUrl: '172.20.10.53:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'MyLab-Snapshot', version: '${Version}'
+                nexusArtifactUploader artifacts: [[artifactId: '${ArtifactID}', classifier: '', file: 'target/${Name}-${Version}.war', type: 'war']], credentialsId: 'e3c08fb5-e259-4985-82b1-136ad0802892', groupId: '${GroupId}', nexusUrl: '172.20.10.53:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'MyLab-Snapshot', version: '${Version}'
             }
         }
 
