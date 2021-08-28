@@ -25,7 +25,7 @@ pipeline{
         // Stage3: Publish to nexus
         stage ("Publish to Nexus"){
             steps {
-                nexusArtifactUploader artifacts: [[artifactId: 'MyLab', classifier: '', file: 'target/MyLab-0.0.4-Snapshot.war', type: 'war']], credentialsId: 'e3c08fb5-e259-4985-82b1-136ad0802892', groupId: 'com.mylab', nexusUrl: '172.20.10.53:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'MyLab-Snapshot', version: '0.0.4-Snapshot'
+                nexusArtifactUploader artifacts: [[artifactId: 'MyLab', classifier: '', file: 'target/MyLab-0.0.4-SNAPSHOT.war', type: 'war']], credentialsId: 'e3c08fb5-e259-4985-82b1-136ad0802892', groupId: 'com.mylab', nexusUrl: '172.20.10.53:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'MyLab-Snapshot', version: '0.0.4-SNAPSHOT'
             }
         }
 
