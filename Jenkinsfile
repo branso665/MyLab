@@ -66,9 +66,23 @@ pipeline{
 
 
         // Stage3 : Publish the source code to Sonarqube
-        stage ('Sonarqube Analysis'){
+        stage ('Deploy'){
             steps {
-                echo 'deploying......'
+                echo "Deploying..."
+                sshPublisher(publishers: 
+                [sshPublisherDesc(
+                    configName: 'Ansible', 
+                    transfers: [
+                        sshTransfer(
+                            cleanRemote: false, 
+                            execCommand: 'ansible-playbook /opt/playbooks/downloadanddeploy.yaml -i /opt/playbooks/hosts', 
+                            execTimeout: 120000
+                        )
+                    ], 
+                    usePromotionTimestamp: false, 
+                    useWorkspaceInPromotion: false, 
+                    verbose: false)
+                    ])
                 // withSonarQubeEnv('sonarqube'){ // You can override the credential to be used
                 //      sh 'mvn sonar:sonar'
                 
