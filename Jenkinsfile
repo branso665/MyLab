@@ -53,7 +53,7 @@ pipeline{
 
         }
 
-        // Stage3: To Print Inforamtion
+        // Stage4: To Print Inforamtion
         stage ('Print Environment Variables'){
             steps {
                 echo  "Artefact ID: '${ArtifactID}'"
@@ -65,7 +65,7 @@ pipeline{
         }
 
 
-        // Stage3 : Publish the source code to Sonarqube
+        // Stage5 : Publish the source code to Sonarqube
         stage ('Deploy'){
             steps {
                 echo "Deploying..."
@@ -75,7 +75,7 @@ pipeline{
                     transfers: [
                         sshTransfer(
                             cleanRemote: false, 
-                            execCommand: 'ansible-playbook /opt/playbooks/downloadanddeploy.yaml -i /opt/playbooks/hosts', 
+                            execCommand: 'ansible-playbook /opt/playbooks/downloadanddeploy_as_tomcat.yamlKs -i /opt/playbooks/hosts', 
                             execTimeout: 120000
                         )
                     ], 
@@ -90,7 +90,30 @@ pipeline{
             }
         }
 
-        
+        // Stage5 : Publish the source code to Sonarqube
+        stage ('Deploy to Docker'){
+            steps {
+                echo "Deploying..."
+                sshPublisher(publishers: 
+                [sshPublisherDesc(
+                    configName: 'Ansible', 
+                    transfers: [
+                        sshTransfer(
+                            cleanRemote: false, 
+                            execCommand: 'ansible-playbook /opt/playbooks/downloadanddeploy_docker.yaml -i /opt/playbooks/hosts', 
+                            execTimeout: 120000
+                        )
+                    ], 
+                    usePromotionTimestamp: false, 
+                    useWorkspaceInPromotion: false, 
+                    verbose: false)
+                    ])
+                // withSonarQubeEnv('sonarqube'){ // You can override the credential to be used
+                //      sh 'mvn sonar:sonar'
+                
+
+            }
+        }
         
     }
 
